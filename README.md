@@ -23,5 +23,5 @@ A streamlined, full-stack enterprise resource planning (ERP) system designed to 
 ---
 
 ## Tech Stack
-- **Full-Stack Framework**: Nuxt 3 (Vue.js 3 / Tailwind CSS / Server API Routes)
+- **Full-Stack Framework**: SvelteKit 3 (Svelte 5 / Tailwind CSS / Server API Routes)
 - **Database**: PostgreSQL
