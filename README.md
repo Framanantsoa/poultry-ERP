@@ -23,5 +23,38 @@ A streamlined, full-stack enterprise resource planning (ERP) system designed to 
 ---
 
 ## Tech Stack
-- **Full-Stack Framework**: Nuxt 3 (Vue.js 3 / Tailwind CSS / Server API Routes)
+- **Full-Stack Framework**: SvelteKit 3 (Svelte 5 / Tailwind CSS / Server API Routes)
 - **Database**: PostgreSQL
+- **Runtime**: Node.js 22+
+
+---
+
+## Local Setup — Step by Step
+
+### 1. Clone the repository
+```sh
+git clone https://github.com/Framanantsoa/poultry-ERP poultry-erp
+cd poultry-erp/web-app
+```
+
+### 2. Install dependencies
+```sh
+npm install
+```
+
+### 3. Create & Edit the .env file
+```code
+# Drizzle
+DATABASE_URL="postgres://user:password@host:port/db-name"
+```
+
+### 4. Run database migrations
+```sh
+npx drizzle-kit generate
+npx drizzle-kit migrate
+```
+
+### 5. Start the dev server
+```sh
+npm run dev
+```
