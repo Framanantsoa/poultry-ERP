@@ -14,8 +14,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
-	<a
-		href="/breeds"
+	<a href="/breeds"
 		class="mb-6 inline-flex items-center gap-1.5 text-sm text-stone-600 transition hover:text-stone-900"
 	>
 		<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -67,14 +66,12 @@
 			</div>
 
 			<div class="flex items-center justify-end gap-3 border-t border-stone-100 pt-6">
-				<a
-					href="/breeds"
+				<a href="/breeds"
 					class="rounded-xl px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100"
 				>
 					Cancel
 				</a>
-				<button
-					type="submit"
+				<button type="submit"
 					class="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-semibold text-stone-900 shadow-sm transition hover:bg-amber-400"
 				>
 					Save changes
