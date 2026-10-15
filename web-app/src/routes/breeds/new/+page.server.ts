@@ -2,6 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { breedSchema } from '#lib/schemas/breed.ts';
 import { createBreed } from '#lib/server/db/queries/breed.ts';
+import { z } from 'zod';
 
 export const actions: Actions = {
 	default: async ({ request }) => {
@@ -12,8 +13,12 @@ export const actions: Actions = {
 		});
 
 		if (!parsed.success) {
+			const fieldErrors = z.flattenError(parsed.error).fieldErrors;
 			return fail(400, {
-				errors: parsed.error.flatten().fieldErrors,
+				errors: {
+					name: fieldErrors.name ?? [],
+					notes: fieldErrors.notes ?? []
+				},
 				values: { name: data.get('name'), notes: data.get('notes') }
 			});
 		}
@@ -21,10 +26,12 @@ export const actions: Actions = {
 		try {
 			await createBreed(parsed.data);
 		} catch (err: any) {
-			// Postgres unique violation
 			if (err?.code === '23505') {
 				return fail(409, {
-					errors: { name: ['A breed with this name already exists'] },
+					errors: {
+						name: ['A breed with this name already exists'],
+						notes: []
+					},
 					values: { name: data.get('name'), notes: data.get('notes') }
 				});
 			}

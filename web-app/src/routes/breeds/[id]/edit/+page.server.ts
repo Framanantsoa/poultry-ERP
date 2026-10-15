@@ -2,6 +2,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { getBreedById, updateBreed } from '#lib/server/db/queries/breed.ts';
 import { breedSchema } from '#lib/schemas/breed.ts';
+import { z } from 'zod';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const id = Number(params.id);
@@ -25,8 +26,12 @@ export const actions: Actions = {
 		});
 
 		if (!parsed.success) {
+			const fieldErrors = z.flattenError(parsed.error).fieldErrors;
 			return fail(400, {
-				errors: parsed.error.flatten().fieldErrors,
+				errors: {
+					name: fieldErrors.name ?? [],
+					notes: fieldErrors.notes ?? []
+				},
 				values: { name: data.get('name'), notes: data.get('notes') }
 			});
 		}
@@ -36,7 +41,10 @@ export const actions: Actions = {
 		} catch (err: any) {
 			if (err?.code === '23505') {
 				return fail(409, {
-					errors: { name: ['A breed with this name already exists'] },
+					errors: {
+						name: ['A breed with this name already exists'],
+						notes: []
+					},
 					values: { name: data.get('name'), notes: data.get('notes') }
 				});
 			}
