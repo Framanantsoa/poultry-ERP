@@ -1,11 +1,11 @@
-import { getBatchById, updateBatch, listBreedsForSelect } from '#lib/server/db/queries/batches.ts';
+import { getBatchById, updateBatch, listBreedsForSelect } from '#lib/server/db/queries/batch.ts';
 import { batchSchema } from '#lib/schemas/batch.ts';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import type { BatchFormResult } from '#lib/types/form.ts';
 import type { Batch } from '#lib/server/db/schema.ts';
-import { BreedNotActiveError } from '#lib/server/db/queries/batches.ts';
+import { BreedNotActiveError } from '#lib/server/db/queries/batch.ts';
 
 type BreedOption = { id: number; name: string };
 

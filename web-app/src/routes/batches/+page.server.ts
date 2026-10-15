@@ -1,4 +1,4 @@
-import { listBatches, type BatchListItem } from '#lib/server/db/queries/batches.ts';
+import { listBatches, type BatchListItem } from '#lib/server/db/queries/batch.ts';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url })

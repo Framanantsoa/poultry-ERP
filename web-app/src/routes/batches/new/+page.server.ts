@@ -1,10 +1,10 @@
-import { createBatch, listBreedsForSelect } from '#lib/server/db/queries/batches.ts';
+import { createBatch, listBreedsForSelect } from '#lib/server/db/queries/batch.ts';
 import { batchSchema } from '#lib/schemas/batch.ts';
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
-import type { BreedOption } from '#lib/server/db/queries/batches.ts';
-import { BreedNotActiveError } from '#lib/server/db/queries/batches.ts';
+import type { BreedOption } from '#lib/server/db/queries/batch.ts';
+import { BreedNotActiveError } from '#lib/server/db/queries/batch.ts';
 import type { BatchFormResult } from '#lib/types/form.ts';
 
 export const load: PageServerLoad = async ()

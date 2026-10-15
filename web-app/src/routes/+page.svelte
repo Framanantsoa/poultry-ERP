@@ -8,13 +8,13 @@
 			subtitle: 'Track production, feed, and mortality from one elegant dashboard.'
 		},
 		{
-			image: null,
+			image: 'https://images.unsplash.com/photo-1498654077810-12c21d4d6dc3?w=1600&q=80',
 			eyebrow: 'Real-time Insights',
 			title: null,
 			subtitle: 'Live metrics across all active batches without spreadsheets.'
 		},
 		{
-			image: 'https://images.unsplash.com/photo-1612170153139-6f881ff067e0?w=1600&q=80',
+			image: 'https://images.pexels.com/photos/7782056/pexels-photo-7782056.jpeg',
 			eyebrow: 'Built for Farmers',
 			title: 'Less bookkeeping. More farming.',
 			subtitle: 'Record a day of production in seconds, from phone or desktop.'
