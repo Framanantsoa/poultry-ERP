@@ -8,7 +8,7 @@
 			subtitle: 'Track production, feed, and mortality from one elegant dashboard.'
 		},
 		{
-			image: 'https://images.unsplash.com/photo-1569420067112-33e0a3be1c4f?w=1600&q=80',
+			image: null,
 			eyebrow: 'Real-time Insights',
 			title: null,
 			subtitle: 'Live metrics across all active batches without spreadsheets.'
@@ -28,7 +28,7 @@
 		if (paused) return;
 		const id = setInterval(() => {
 			current = (current + 1) % slides.length;
-		}, 6000);
+		}, 4000);
 		return () => clearInterval(id);
 	});
 
@@ -84,8 +84,7 @@
 	/>
 </svelte:head>
 
-<!-- ─── Hero Carousel ──────────────────────────────────────── -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- ─── Hero Carousel ─── -->
 <section
 	class="relative h-[calc(100vh-4rem)] min-h-[560px] w-full overflow-hidden"
 	onmouseenter={() => (paused = true)}
@@ -125,7 +124,7 @@
 
 				<div class="mt-8 flex flex-wrap gap-3">
 					<a
-						href="/batches"
+						href="/dashboard"
 						class="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-stone-900 shadow-lg shadow-amber-500/20 transition hover:bg-amber-400 hover:shadow-amber-500/40"
 					>
 						Open Dashboard
@@ -148,7 +147,7 @@
 	<button
 		type="button"
 		onclick={prev}
-		class="absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 rounded-full border border-white/20 bg-black/20 p-2.5 text-white backdrop-blur-sm transition hover:bg-black/40 sm:block"
+		class="absolute left-4 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-white/20 bg-black/20 p-2.5 text-white backdrop-blur-sm transition hover:bg-black/40 sm:block"
 		aria-label="Previous slide"
 	>
 		<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -158,7 +157,7 @@
 	<button
 		type="button"
 		onclick={next}
-		class="absolute right-4 top-1/2 z-20 hidden -translate-y-1/2 rounded-full border border-white/20 bg-black/20 p-2.5 text-white backdrop-blur-sm transition hover:bg-black/40 sm:block"
+		class="absolute right-4 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-white/20 bg-black/20 p-2.5 text-white backdrop-blur-sm transition hover:bg-black/40 sm:block"
 		aria-label="Next slide"
 	>
 		<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
