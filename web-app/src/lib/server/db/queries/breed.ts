@@ -1,4 +1,4 @@
-import { eq, isNull, isNotNull, and, desc, count } from 'drizzle-orm';
+import { eq, isNull, desc, count } from 'drizzle-orm';
 import { batches, breeds } from '../schema';
 import type { BreedInput } from '#lib/schemas/breed.ts';
 import { db } from '..';

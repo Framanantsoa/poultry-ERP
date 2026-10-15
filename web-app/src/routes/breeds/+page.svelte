@@ -1,10 +1,32 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import { enhance } from '$app/forms';
+	import ConfirmDialog from '#lib/components/ConfirmDialog.svelte';
 
 	let { data, form }: PageProps = $props();
 
-	let deleting = $state<number | null>(null);
+	// Target breed selected for deletion
+	let target = $state<{ id: number; name: string; batchCount: number } | null>(null);
+	let submitting = $state(false);
+
+	// Bound form refs, one per row
+	let formRefs = $state<Record<number, HTMLFormElement | null>>({});
+
+	function askDelete(breed: { id: number; name: string; batchCount: number }) {
+		target = breed;
+	}
+
+	function cancelDelete() {
+		target = null;
+	}
+
+	function confirmDelete() {
+		if (!target) return;
+		const el = formRefs[target.id];
+		if (!el) return;
+		submitting = true;
+		el.requestSubmit();
+	}
 </script>
 
 <svelte:head>
@@ -60,7 +82,6 @@
 				<thead class="border-b border-stone-200 bg-stone-50 text-xs uppercase tracking-wider text-stone-500">
 					<tr>
 						<th class="px-5 py-3 font-medium">Name</th>
-						<!-- Hidden on mobile, shown on sm+ -->
 						<th class="hidden px-5 py-3 font-medium sm:table-cell">Notes</th>
 						<th class="px-5 py-3 font-medium text-center">Batches</th>
 						<th class="px-5 py-3 font-medium text-right">Actions</th>
@@ -70,7 +91,6 @@
 					{#each data.breeds as breed (breed.id)}
 						<tr class="transition hover:bg-stone-50/60">
 							<td class="px-5 py-4 font-medium text-stone-900">{breed.name}</td>
-							<!-- Hidden on mobile, shown on sm+ -->
 							<td class="hidden px-5 py-4 text-stone-600 sm:table-cell">
 								{breed.notes ?? '—'}
 							</td>
@@ -87,30 +107,31 @@
 									>
 										Edit
 									</a>
+
 									<form
 										method="POST"
 										action="?/delete"
+										bind:this={formRefs[breed.id]}
 										use:enhance={() => {
 											return async ({ update }) => {
-												deleting = null;
+												submitting = false;
+												target = null;
 												await update();
 											};
-										}}
-										onsubmit={(e) => {
-											if (!confirm(`Delete "${breed.name}"?`)) {
-												e.preventDefault();
-											} else {
-												deleting = breed.id;
-											}
 										}}
 									>
 										<input type="hidden" name="id" value={breed.id} />
 										<button
-											type="submit"
-											disabled={deleting === breed.id}
-											class="rounded-lg px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50"
+											type="button"
+											onclick={() =>
+												askDelete({
+													id: breed.id,
+													name: breed.name,
+													batchCount: breed.batchCount
+												})}
+											class="rounded-lg px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50"
 										>
-											{deleting === breed.id ? 'Deleting…' : 'Delete'}
+											Delete
 										</button>
 									</form>
 								</div>
@@ -122,3 +143,19 @@
 		</div>
 	{/if}
 </div>
+
+<!-- Confirmation dialog -->
+<ConfirmDialog
+	open={target !== null}
+	title="Delete breed?"
+	message={target
+		? target.batchCount > 0
+			? `"${target.name}" is used by ${target.batchCount} batch${target.batchCount === 1 ? '' : 'es'}. It will be archived from new assignments, but existing batches will keep their reference.`
+			: `"${target.name}" will be archived. You can restore it later if needed.`
+		: ''}
+	confirmLabel="Delete breed"
+	variant="danger"
+	loading={submitting}
+	onconfirm={confirmDelete}
+	oncancel={cancelDelete}
+/>
