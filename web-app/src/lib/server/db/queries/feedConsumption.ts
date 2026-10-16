@@ -50,10 +50,7 @@ export async function listFeedConsumptions(
 			.from(feedConsumption)
 			.leftJoin(batches, eq(feedConsumption.batchId, batches.id))
 			.where(where)
-			.orderBy(
-				desc(feedConsumption.consumptionDate),
-				desc(feedConsumption.id)
-			)
+			.orderBy(desc(feedConsumption.createdAt))
 			.limit(perPage)
 			.offset((page - 1) * perPage),
 
