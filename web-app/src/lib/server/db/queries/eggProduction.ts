@@ -52,10 +52,7 @@ export async function listEggProductions(
 			.from(eggProduction)
 			.leftJoin(batches, eq(eggProduction.batchId, batches.id))
 			.where(where)
-			.orderBy(
-				desc(eggProduction.productionDate),
-				desc(eggProduction.id) // stable tie-break
-			)
+			.orderBy(desc(eggProduction.createdAt))
 			.limit(perPage)
 			.offset((page - 1) * perPage),
 

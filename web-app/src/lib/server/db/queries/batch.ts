@@ -53,7 +53,7 @@ export async function listBatches(
 		})
 		.from(batches)
 		.leftJoin(breeds, eq(batches.breedId, breeds.id))
-		.orderBy(desc(batches.arrivalDate), desc(batches.id));
+		.orderBy(desc(batches.createdAt));
 
 	if (filters?.status) {
 		return base.where(eq(batches.status, filters.status));

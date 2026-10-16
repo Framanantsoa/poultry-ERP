@@ -48,7 +48,7 @@ export async function listMortalities(
 			.from(mortality)
 			.leftJoin(batches, eq(mortality.batchId, batches.id))
 			.where(where)
-			.orderBy(desc(mortality.eventDate), desc(mortality.id))
+			.orderBy(desc(mortality.createdAt))
 			.limit(perPage)
 			.offset((page - 1) * perPage),
 
