@@ -51,7 +51,7 @@ export const actions: Actions = {
 				values: raw,
 				errors: {
 					productionDate: [
-						`Production cannot be recorded before ${formatLongDate(batch.arrivalDate)}.`
+						`Must be on or after the batch's arrival (${formatLongDate(batch.arrivalDate)}).`
 					]
 				}
 			});

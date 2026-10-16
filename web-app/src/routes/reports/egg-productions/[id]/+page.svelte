@@ -49,9 +49,7 @@
 				<div>
 					<h1 class="text-2xl font-bold tracking-tight text-stone-900">
 						{new Date(data.row.productionDate).toLocaleDateString(undefined, {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric'
+							year: 'numeric', month: 'long', day: 'numeric'
 						})}
 					</h1>
 					<p class="mt-1 text-sm text-stone-600">
