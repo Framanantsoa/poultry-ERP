@@ -61,7 +61,7 @@ export type FeedConsumptionUpdateInput = z.infer<typeof feedConsumptionUpdateSch
 // ─── List filters (search params) ───────────────────────────────────
 export const feedConsumptionListFiltersSchema = z.object({
 	page: z.coerce.number().int().min(1).default(1),
-	perPage: z.coerce.number().int().min(5).max(100).default(20),
+	perPage: z.coerce.number().int().min(5).max(100).default(10),
 	batchId: z.coerce.number().int().positive().optional(),
 	from: z.string().optional(), // YYYY-MM-DD
 	to: z.string().optional() // YYYY-MM-DD
