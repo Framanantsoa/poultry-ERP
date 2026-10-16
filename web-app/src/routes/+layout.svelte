@@ -32,65 +32,61 @@
 	<header
 		class="sticky top-0 z-40 border-b border-stone-200/70 bg-white/85 backdrop-blur-md"
 	>
-		<div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-			<!-- Logo -->
-			<a href="/" class="flex items-center gap-2.5 group">
-				<div
-					class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-sm transition-transform group-hover:scale-105"
-				>
-					<span class="text-lg">🐓</span>
-				</div>
-				<div class="leading-tight">
-					<div class="text-sm font-semibold text-stone-900">Poultry ERP</div>
-					<div class="text-[10px] uppercase tracking-wider text-stone-500">Farm Manager</div>
-				</div>
-			</a>
+		<div class="flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+  <!-- LEFT: Logo -->
+  <a href="/" class="flex items-center gap-2.5 group shrink-0">
+    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-sm transition-transform group-hover:scale-105">
+      <span class="text-lg">🐓</span>
+    </div>
+    <div class="leading-tight">
+      <div class="text-sm font-semibold text-stone-900">Poultry ERP</div>
+      <div class="text-[10px] uppercase tracking-wider text-stone-500">Farm Manager</div>
+    </div>
+  </a>
 
-			<!-- Desktop nav -->
-			<nav class="hidden md:flex items-center gap-1">
-				{#each navItems as item}
-					<a
-						href={item.href}
-						class="rounded-lg px-3 py-2 text-sm font-medium transition-colors
-							{isActive(item.href)
-							? 'bg-amber-50 text-amber-700'
-							: 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'}"
-					>
-						{item.label}
-					</a>
-				{/each}
-			</nav>
+  <!-- RIGHT: Nav + actions -->
+  <div class="flex items-center gap-2">
+    <nav class="hidden md:flex items-center gap-1 mr-6">
+      {#each navItems as item}
+        <a
+          href={item.href}
+          class="rounded-lg px-3 py-2 text-sm font-medium transition-colors
+            {isActive(item.href)
+              ? 'bg-amber-50 text-amber-700'
+              : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'}"
+        >
+          {item.label}
+        </a>
+      {/each}
+    </nav>
 
-			<!-- Right side -->
-			<div class="flex items-center gap-2">
-				<button
-					type="button"
-					class="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-sm transition hover:border-stone-300 hover:bg-stone-50"
-				>
-					<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-					Synced
-				</button>
+    <button
+      type="button"
+      class="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-sm transition hover:border-stone-300 hover:bg-stone-50"
+    >
+      <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+      Running
+    </button>
 
-				<!-- Mobile menu toggle -->
-				<button
-					type="button"
-					onclick={() => (mobileOpen = !mobileOpen)}
-					class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
-					aria-label="Toggle menu"
-					aria-expanded={mobileOpen}
-				>
-					{#if mobileOpen}
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-						</svg>
-					{:else}
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-						</svg>
-					{/if}
-				</button>
-			</div>
-		</div>
+    <button
+      type="button"
+      onclick={() => (mobileOpen = !mobileOpen)}
+      class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
+      aria-label="Toggle menu"
+      aria-expanded={mobileOpen}
+    >
+      {#if mobileOpen}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      {:else}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      {/if}
+    </button>
+  </div>
+</div>
 
 		<!-- Mobile nav -->
 		{#if mobileOpen}
