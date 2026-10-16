@@ -65,7 +65,7 @@ export type EggProductionUpdateInput = z.infer<typeof eggProductionUpdateSchema>
 // ─── List filters (search params) ───────────────────────────────────
 export const eggProductionListFiltersSchema = z.object({
 	page: z.coerce.number().int().min(1).default(1),
-	perPage: z.coerce.number().int().min(5).max(100).default(20),
+	perPage: z.coerce.number().int().min(5).max(100).default(10),
 	batchId: z.coerce.number().int().positive().optional(),
 	from: z.string().optional(),
 	to: z.string().optional()

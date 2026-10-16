@@ -30,7 +30,6 @@
 				values={form?.values}
 				errors={form?.errors}
 				submitLabel="Save production"
-                existingId={form?.existingId}
 			/>
 		</div>
 	</div>

@@ -36,12 +36,6 @@
 		Back to egg productions
 	</a>
 
-	{#if form?.success && !editing}
-		<div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-			Production updated.
-		</div>
-	{/if}
-
 	<div class="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm sm:p-8">
 		{#if !editing}
 			<!-- ─── View mode ─── -->
