@@ -1,12 +1,11 @@
 import { eggProductionUpdateSchema } from '#lib/schemas/eggProduction.ts';
-import { eq, asc } from 'drizzle-orm';
-import { error, fail } from '@sveltejs/kit';
+import { and, asc, eq, ne } from 'drizzle-orm';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { getEggProductionById } from '#lib/server/db/queries/eggProduction.ts';
 import { db } from '#lib/server/db/index.ts';
 import { batches, eggProduction } from '#lib/server/db/schema.ts';
-import { redirect } from '@sveltejs/kit';
-import { success } from 'zod';
+import { formatLongDate } from '#lib/utils/dates.ts';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const id = Number(params.id);
@@ -39,6 +38,37 @@ export const actions: Actions = {
 		}
 
 		const d = parsed.data;
+
+		// ── Pre-check: batch exists and has arrived by productionDate ──
+		const [batch] = await db
+			.select({
+				id: batches.id,
+				name: batches.name,
+				arrivalDate: batches.arrivalDate
+			})
+			.from(batches)
+			.where(eq(batches.id, d.batchId))
+			.limit(1);
+
+		if (!batch) {
+			return fail(400, {
+				values: raw,
+				errors: { batchId: ['Selected batch does not exist.'] }
+			});
+		}
+
+		if (batch.arrivalDate && d.productionDate < batch.arrivalDate) {
+			return fail(400, {
+				values: raw,
+				errors: {
+					productionDate: [
+						`Must be on or after the batch's arrival (${formatLongDate(batch.arrivalDate)}).`
+					]
+				}
+			});
+		}
+
+		// ── Update ──
 		try {
 			await db
 				.update(eggProduction)
@@ -53,18 +83,23 @@ export const actions: Actions = {
 					updatedAt: new Date()
 				})
 				.where(eq(eggProduction.id, id));
-		} catch (e) {
-			const msg = e instanceof Error ? e.message : String(e);
-			if (msg.includes('egg_batch_date_unique')) {
+		} catch (e: unknown) {
+			// Defensive: race condition between check and update
+			const err = e as { code?: string; constraint?: string; message?: string };
+			if (
+				err?.code === '23505' ||
+				err?.constraint === 'egg_batch_date_unique' ||
+				(err?.message ?? '').includes('egg_batch_date_unique')
+			) {
 				return fail(400, {
 					values: raw,
-					errors: { productionDate: ['This batch already has an entry for that date.'] }
+					errors: { productionDate: ['Another entry already exists for this batch and date.'] }
 				});
 			}
+			console.error('[egg-production update] failed:', e);
 			throw e;
 		}
 
-        redirect(303, `/reports/egg-productions`);
-        return {success: true};
+		redirect(303, '/reports/egg-productions');
 	}
 };

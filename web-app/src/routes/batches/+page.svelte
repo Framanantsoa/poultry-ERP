@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { formatLongDate } from '#lib/utils/dates.ts';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -94,7 +95,7 @@
 								<span class="font-medium">{b.currentCount}</span>
 								<span class="text-stone-400">/ {b.initialCount}</span>
 							</td>
-							<td class="hidden px-5 py-4 text-stone-600 md:table-cell">{b.arrivalDate}</td>
+							<td class="hidden px-5 py-4 text-stone-600 md:table-cell">{formatLongDate(b.arrivalDate)}</td>
 							<td class="px-5 py-4">
 								<span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {statusBadgeClass(b.status)}">
 									{b.status}
