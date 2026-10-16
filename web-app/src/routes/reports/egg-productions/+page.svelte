@@ -1,15 +1,8 @@
 <script lang="ts">
+	import { formatLongDate } from '#lib/utils/dates.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-
-	function fmt(date: string | Date) {
-		return new Date(date).toLocaleDateString(undefined, {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric'
-		});
-	}
 
 	const usableTotal = $derived(
 		data.totals.collected - data.totals.broken - data.totals.discarded
@@ -100,7 +93,7 @@
 				<tbody class="divide-y divide-stone-100">
 					{#each data.rows as row (row.id)}
 						<tr class="transition hover:bg-stone-50">
-							<td class="whitespace-nowrap px-4 py-3 text-sm text-stone-700">{fmt(row.productionDate)}</td>
+							<td class="whitespace-nowrap px-4 py-3 text-sm text-stone-700">{formatLongDate(row.productionDate)}</td>
 							<td class="px-4 py-3 text-sm text-stone-700">{row.batchName ?? `#${row.batchId}`}</td>
 							<td class="px-4 py-3 text-right text-sm font-medium text-stone-900">{row.eggsCollected}</td>
 							<td class="px-4 py-3 text-right text-sm text-stone-600">{row.eggsBroken}</td>

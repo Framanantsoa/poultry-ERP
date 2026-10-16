@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import EggProductionForm from '#lib/components/EggProductionForm.svelte';
+	import { formatDateTime } from '#lib/utils/dates.ts';
 
 	let { data, form }: PageProps = $props();
 
@@ -109,11 +110,11 @@
 				</div>
 				<div class="grid grid-cols-3 gap-4 px-4 py-3">
 					<dt class="text-sm text-stone-500">Created</dt>
-					<dd class="col-span-2 text-sm text-stone-900">{fmtDateTime(data.row.createdAt)}</dd>
+					<dd class="col-span-2 text-sm text-stone-900">{formatDateTime(data.row.createdAt)}</dd>
 				</div>
 				<div class="grid grid-cols-3 gap-4 px-4 py-3">
 					<dt class="text-sm text-stone-500">Updated</dt>
-					<dd class="col-span-2 text-sm text-stone-900">{fmtDateTime(data.row.updatedAt)}</dd>
+					<dd class="col-span-2 text-sm text-stone-900">{formatDateTime(data.row.updatedAt)}</dd>
 				</div>
 			</dl>
 		{:else}
@@ -135,7 +136,6 @@
 						notes: data.row.notes
 					}}
 					errors={form?.errors}
-					message={form?.message}
 					submitLabel="Save changes"
 					cancelHref="/reports/egg-productions/{data.row.id}"
 				/>

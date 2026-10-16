@@ -29,7 +29,6 @@
 				batches={data.batches}
 				values={form?.values}
 				errors={form?.errors}
-				message={form?.message}
 				submitLabel="Save production"
                 existingId={form?.existingId}
 			/>

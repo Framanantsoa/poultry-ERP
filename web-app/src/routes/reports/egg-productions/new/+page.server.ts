@@ -4,6 +4,7 @@ import { and, asc, eq } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '#lib/server/db/index.ts';
 import { batches, eggProduction } from '#lib/server/db/schema.ts';
+import { formatLongDate } from '#lib/utils/dates.ts';
 
 export const load: PageServerLoad = async () => {
 	const batchList = await db
@@ -27,7 +28,36 @@ export const actions: Actions = {
 
 		const d = parsed.data;
 
-		// ── Pre-check: does an entry already exist for this batch+date? ──
+		// ── Pre-check 1: batch exists and has arrived by productionDate ──
+		const [batch] = await db
+			.select({
+				id: batches.id,
+				name: batches.name,
+				arrivalDate: batches.arrivalDate
+			})
+			.from(batches)
+			.where(eq(batches.id, d.batchId))
+			.limit(1);
+
+		if (!batch) {
+			return fail(400, {
+				values: raw,
+				errors: { batchId: ['Selected batch does not exist.'] }
+			});
+		}
+
+		if (batch.arrivalDate && d.productionDate < batch.arrivalDate) {
+			return fail(400, {
+				values: raw,
+				errors: {
+					productionDate: [
+						`Production cannot be recorded before ${formatLongDate(batch.arrivalDate)}.`
+					]
+				}
+			});
+		}
+
+		// ── Pre-check 2: no existing entry for this batch+date ──
 		const [existing] = await db
 			.select({ id: eggProduction.id })
 			.from(eggProduction)
@@ -43,9 +73,7 @@ export const actions: Actions = {
 			return fail(400, {
 				values: raw,
 				errors: {
-					productionDate: [
-						`This batch already has an entry for that date.`
-					]
+					productionDate: [`This batch already has an entry for that date.`]
 				},
 				existingId: existing.id
 			});
@@ -64,7 +92,6 @@ export const actions: Actions = {
 				source: d.source
 			});
 		} catch (e: unknown) {
-			// Defensive: race condition between check and insert
 			const err = e as { code?: string; constraint?: string; message?: string };
 			if (
 				err?.code === '23505' ||
@@ -78,7 +105,6 @@ export const actions: Actions = {
 					}
 				});
 			}
-			// Anything else is a real bug — let SvelteKit surface it
 			console.error('[egg-production create] insert failed:', e);
 			throw e;
 		}
